@@ -6,33 +6,32 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ListBarangController;
 
-// --- Bagian Route Halaman Utama (Pake Route::view buat mockup sesuai modul) ---
+// --- Bagian Route Halaman Utama ---
+// Sekarang kalau buka 127.0.0.1:8000 langsung ke halaman produk
+Route::get('/', function () {
+    return redirect('/produk-namonic');
+});
+
 Route::get('/welcome', function () {
     return view('welcome');
 });
 
-// Sesuai instruksi modul poin 5 (mockup route -> view) [cite: 113-120]
 Route::view('/home', 'home');
 Route::view('/about', 'about');
 Route::view('/contact', 'contact');
 Route::view('/register', 'register');
 
-// Halaman Utama / Loading
-Route::view('/', 'index'); 
-
-// Alur Pembelian
+// --- Alur Pembelian ---
 Route::view('/cart', 'cart');
-Route::view('/checkout', 'checkout'); // Isi data diri
-Route::view('/payment', 'payment');   // Pilih metode bayar
-Route::view('/receipt', 'receipt');   // Upload & Lihat bukti
+Route::view('/checkout', 'checkout');
+Route::view('/payment', 'payment');
+Route::view('/receipt', 'receipt');
 
-// --- Bagian Route untuk Login, Dashboard, dan Produk ---
+// --- Bagian Route untuk Login & Dashboard ---
 Route::get('/login', [LoginController::class, 'index']);
 Route::get('/dashboard', [DashboardController::class, 'index']);
-Route::get('/produk', [ProdukController::class, 'index']);
 
 // --- Bagian Tugas Praktikum 4 (Pake Controller) ---
-// Ini buat nampilin data array yang di-looping di tabel [cite: 37-41]
 Route::get('/list-barang', [ListBarangController::class, 'tampilkan']);
 
 // --- Bagian Admin Group ---
@@ -45,3 +44,17 @@ Route::prefix('admin')->group(function () {
         return 'Admin Users';
     });
 });
+
+// ============================================================
+// --- TUGAS PRAKTIKUM 6 (MVC & Component) ---
+// ============================================================
+
+// Halaman Semua Produk (Data diambil dari ProdukController@index)
+Route::get('/produk-namonic', [ProdukController::class, 'index']);
+
+// Halaman Kategori
+Route::get('/kategori/pakaian', [ProdukController::class, 'kategoriPakaian']);
+Route::get('/kategori/aksesoris', [ProdukController::class, 'kategoriAksesoris']);
+Route::get('/kategori/dekorasi', [ProdukController::class, 'kategoriDekorasi']);
+Route::get('/kategori/amigurumi', [ProdukController::class, 'kategoriAmigurumi']);
+Route::get('/kategori/tas-wadah', [ProdukController::class, 'kategoriTas']);
